@@ -100,3 +100,11 @@
                     (response/bad-request {:error "Something went wrong..."})
                     (response/ok {:message "Details successfully fetched..."
                                   :data user})))
+
+(defn search-users
+  [{{name "name"} :query-params :as req}]
+  (f/if-let-failed? [users (db-success? (db/search-users! {:id (get-in req [:identity :user-id])
+                                                           :name name}))]
+                    (response/bad-request {:error "Something went wrong..."})
+                    (response/ok {:message "Users successfully fetched..."
+                                  :data users})))

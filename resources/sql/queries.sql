@@ -41,3 +41,8 @@ SELECT * FROM users WHERE email = :email
 -- :name get-user-by-email-password! :? :1
 -- :doc retrieves user by email and password
 SELECT * FROM users WHERE email = :email AND password = :password
+
+
+-- :name search-users! :? :*
+-- :doc retrieves user by name
+SELECT id,name,email,profile_pic FROM users WHERE id != :id AND name = :name

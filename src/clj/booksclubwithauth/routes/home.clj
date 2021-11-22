@@ -29,6 +29,9 @@
    ["/api/verifyToken" {:middleware [middleware/auth-middleware]
                         :get user/verifyToken}]
 
+   ["/api/user/search" {:middleware [middleware/auth-middleware]
+                        :get user/search-users}]
+
    ["/api/user/:user-id/book" {:middleware [middleware/auth-middleware]
                  :get book/get-books
                  :post book/add-book}]

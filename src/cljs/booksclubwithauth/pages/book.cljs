@@ -28,7 +28,7 @@
                                        (rf/dispatch [:delete-book id]))}  "Delete"]]]))
 
 (defn my-books []
-  (let [loading @(rf/subscribe [:loading/books])
+  (let [loading @(rf/subscribe [:loading/my-books])
         book-ids @(rf/subscribe [:books/my-read-books-ids])]
     (if loading
       [:div.container.mt-5

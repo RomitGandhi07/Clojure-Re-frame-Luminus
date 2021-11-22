@@ -64,7 +64,8 @@
                     :headers {:Authorization (str "Token " local-store-user)}
                     :on-success [:token-verify-success]
                     :on-failure [:token-verify-failure]}}
-      {:db {}})))
+      {:db {}
+       :dispatch [:token-verify-failure]})))
 
 
 
@@ -79,9 +80,20 @@
     {:navigate! [:login]}))
 
 (rf/reg-event-db
+  :start-loading
+  (fn [db [_ path]]
+    (assoc-in db [:loading path] true)))
+
+(rf/reg-event-db
+  :stop-loading
+  (fn [db [_ path]]
+    (assoc-in db [:loading path] false)))
+
+(rf/reg-event-fx
   :http-failure
-  (fn [db [_ resp]]
-    (assoc db :error (get-in resp [:response :error]))))
+  (fn [cofx [_ path resp]]
+    {:db (assoc (:db cofx) :error (get-in resp [:response :error]))
+     :dispatch [:stop-loading path]}))
 
 
 (rf/reg-event-db

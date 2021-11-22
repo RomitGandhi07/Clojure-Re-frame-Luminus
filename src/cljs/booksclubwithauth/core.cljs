@@ -16,6 +16,7 @@
     [booksclubwithauth.pages.book :as book]
     [booksclubwithauth.pages.login :as login]
     [booksclubwithauth.pages.register :as register]
+    [booksclubwithauth.pages.user :as user]
     [booksclubwithauth.events.login-registration]
     [booksclubwithauth.events.books])
   (:import goog.History))
@@ -46,7 +47,8 @@
                  [nav-link "#/about" "About" :about]
                  (if (some? @username)
                    [:<>
-                    [nav-link "#/books" "Books" :my-books]])]
+                    [nav-link "#/books" "Books" :my-books]
+                    [nav-link "#/users" "Users" :search-users]])]
                 [:div.navbar-end
                  (if (some? @username)
                    [:<>
@@ -101,7 +103,9 @@
      ["/books" {:name :my-books
                 :view book/my-books
                 :controllers [{:start (fn [_] (rf/dispatch [:my-read-books]))}]}]
-     ]))
+
+     ["/users" {:name :search-users
+                :view user/search-users}]]))
 
 (defn start-router! []
   (rfe/start!

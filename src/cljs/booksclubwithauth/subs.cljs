@@ -64,6 +64,13 @@
     (first (filter (fn [book] (= id (:id book))) books))))
 
 (rf/reg-sub
-  :loading/books
+  :loading
   (fn [db]
-    (get-in db [:loading :books])))
+    (:loading db)))
+
+(rf/reg-sub
+  :loading/my-books
+  (fn []
+    (rf/subscribe [:loading]))
+  (fn [loading]
+    (:my-books loading)))
