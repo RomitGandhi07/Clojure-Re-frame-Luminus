@@ -91,21 +91,28 @@
      ["/register" {:name :register
                    :view register/register}]
      ["/book/add" {:name :add-book
-                   :view book/add-book}]
+                   :view book/add-book
+                   :controllers [{:start (fn [_]
+                                           (rf/dispatch [:check-authentication]))}]}]
 
      ["/book/:id/edit" {:name :update-book
                         :view book/update-book
                         :controllers [{:parameters {:path [:id]}
                                        :start (fn [{:keys [path]}]
+                                                (rf/dispatch [:check-authentication])
                                                 (let [{id :id} path]
                                                   (rf/dispatch [:fetch-book-details id])))}]}]
 
      ["/books" {:name :my-books
                 :view book/my-books
-                :controllers [{:start (fn [_] (rf/dispatch [:my-read-books]))}]}]
+                :controllers [{:start (fn [_]
+                                        (rf/dispatch [:check-authentication])
+                                        (rf/dispatch [:my-read-books]))}]}]
 
      ["/users" {:name :search-users
-                :view user/search-users}]]))
+                :view user/search-users
+                :controllers [{:start (fn [_]
+                                        (rf/dispatch [:check-authentication]))}]}]]))
 
 (defn start-router! []
   (rfe/start!

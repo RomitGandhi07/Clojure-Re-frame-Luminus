@@ -79,6 +79,12 @@
   (fn [cofx]
     {:navigate! [:login]}))
 
+(rf/reg-event-fx
+  :check-authentication
+  (fn [{:keys [db]}]
+    (if (empty? (:user db))
+      {:navigate! [:login]})))
+
 (rf/reg-event-db
   :start-loading
   (fn [db [_ path]]
