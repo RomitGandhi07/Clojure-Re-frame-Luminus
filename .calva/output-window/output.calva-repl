@@ -1,0 +1,66 @@
+; This is the Calva evaluation results output window.
+; TIPS: The keyboard shortcut `ctrl+alt+c o` shows and focuses this window
+;   when connected to a REPL session.
+; Please see https://calva.io/output/ for more info.
+; Happy coding! ♥️
+
+; Jacking in...
+; Starting Jack-in Terminal: lein update-in :dependencies conj '[nrepl,"0.8.3"]' -- update-in :plugins conj '[cider/cider-nrepl,"0.26.0"]' -- update-in '[:repl-options,:nrepl-middleware]' conj '["cider.nrepl/cider-middleware"]' -- with-profile +dev repl :headless
+; Hooking up nREPL sessions...
+; Connected session: clj
+; TIPS: 
+;   - You can edit the contents here. Use it as a REPL if you like.
+;   - `alt+enter` evaluates the current top level form.
+;   - `ctrl+enter` evaluates the current form.
+;   - `alt+up` and `alt+down` traverse up and down the REPL command history
+;      when the cursor is after the last contents at the prompt
+;   - Clojure lines in stack traces are peekable and clickable.
+clj꞉user꞉> 
+; Jack-in done.
+clj꞉user꞉> 
+#'booksclubwithauth.handler.book/db
+clj꞉booksclubwithauth.handler.book꞉> 
+{:user {:id 123, :email "abc@gmail.com"}, :shopping-cart {}, :products {1256 {:id 1256, :name "Car", :description ""}}, :a 1}
+clj꞉booksclubwithauth.handler.book꞉> 
+{:user {:id 123, :email "abc@gmail.com"}, :shopping-cart {}, :products {1256 {:id 1256, :name "Car", :description ""}}, :a {:b 1}}
+clj꞉booksclubwithauth.handler.book꞉> 
+{:user {:id 123, :email "abc@gmail.com"}, :shopping-cart {}, :products {1256 {:id 1256, :name "Car", :description ""}, 564 {:id 564, :name "Truck"}}}
+clj꞉booksclubwithauth.handler.book꞉> 
+{:user {:id 123, :email "abc@gmail.com"}, :shopping-cart {}, :products {1256 {:id 1256, :name "Car...For sale", :description ""}}}
+clj꞉booksclubwithauth.handler.book꞉> 
+; Syntax error compiling at (src/clj/booksclubwithauth/handler/book.clj:60:3).
+; Unable to resolve symbol: change-name in this context
+clj꞉booksclubwithauth.handler.book꞉> 
+#'booksclubwithauth.handler.book/change-name
+clj꞉booksclubwithauth.handler.book꞉> 
+{:user {:id 123, :email "abc@gmail.com"}, :shopping-cart {}, :products {1256 {:id 1256, :name "Car for sale", :description ""}}}
+clj꞉booksclubwithauth.handler.book꞉> 
+{:user {:id 123, :email "abc@gmail.com"}, :shopping-cart {}, :products {1256 {:id 1256, :name "Car...For sale", :description ""}}}
+clj꞉booksclubwithauth.handler.book꞉> 
+#'booksclubwithauth.handler.book/db
+clj꞉booksclubwithauth.handler.book꞉> 
+; Syntax error compiling at (src/clj/booksclubwithauth/handler/book.clj:67:3).
+; Unable to resolve symbol: product-id in this context
+clj꞉booksclubwithauth.handler.book꞉> 
+{:user {:id 123, :email "abc@gmail.com"}, :shopping-cart {}, :products {1256 {:id 1256, :name "Car", :description "", :price 201}, 434 {:id 434, :name "Truck", :description ".123"}}}
+clj꞉booksclubwithauth.handler.book꞉> 
+; Execution error (NullPointerException) at booksclubwithauth.handler.book/eval43067 (form-init6169056198416949037.clj:68).
+; null
+clj꞉booksclubwithauth.handler.book꞉> 
+{:user {:id 123, :email "abc@gmail.com"}, :shopping-cart {}, :products {1256 {:id 1256, :name "Car", :description "", :price 200}, 434 {:id 434, :name "Truck", :description ".123", :price 1}}}
+clj꞉booksclubwithauth.handler.book꞉> 
+[3]
+clj꞉booksclubwithauth.handler.book꞉> 
+(3)
+clj꞉booksclubwithauth.handler.book꞉> 
+[3 4]
+clj꞉booksclubwithauth.handler.book꞉> 
+(4 3)
+clj꞉booksclubwithauth.handler.book꞉> 
+[3 4]
+clj꞉booksclubwithauth.handler.book꞉> 
+"Car"
+clj꞉booksclubwithauth.handler.book꞉> 
+; Syntax error compiling at (src/clj/booksclubwithauth/handler/book.clj:80:3).
+; No such namespace: rf
+clj꞉booksclubwithauth.handler.book꞉> 

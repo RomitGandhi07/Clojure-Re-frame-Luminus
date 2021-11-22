@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Leiningen: thheller/shadow-cljs:2.15.12">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/thheller/shadow-cljs/2.15.12/shadow-cljs-2.15.12.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

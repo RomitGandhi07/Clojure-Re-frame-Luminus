@@ -1,0 +1,3 @@
+ALTER TABLE books
+    ADD COLUMN user_id INT NOT NULL,
+    ADD CONSTRAINT fk_books_userid FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
