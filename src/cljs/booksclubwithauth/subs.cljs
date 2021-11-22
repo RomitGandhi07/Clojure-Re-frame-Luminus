@@ -63,6 +63,9 @@
   (fn [books [_ id]]
     (first (filter (fn [book] (= id (:id book))) books))))
 
+; ---------------------------
+; LOADING
+
 (rf/reg-sub
   :loading
   (fn [db]
@@ -74,3 +77,32 @@
     (rf/subscribe [:loading]))
   (fn [loading]
     (:my-books loading)))
+
+; ---------------------------
+; ERRORS
+
+(rf/reg-sub
+  :error
+  (fn [db]
+    (:error db)))
+
+(rf/reg-sub
+  :error/login
+  (fn []
+    (rf/subscribe [:error]))
+  (fn [error]
+    (:login error)))
+
+(rf/reg-sub
+  :error/registration
+  (fn []
+    (rf/subscribe [:error]))
+  (fn [error]
+    (:registration error)))
+
+(rf/reg-sub
+  :error/add-update-book
+  (fn []
+    (rf/subscribe [:error]))
+  (fn [error]
+    (or (:add-book error) (:update-book error))))

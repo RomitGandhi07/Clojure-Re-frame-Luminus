@@ -7,7 +7,7 @@
 
 (defn login []
   ()
-   (let [errors @(rf/subscribe [:error])]
+   (let [errors @(rf/subscribe [:error/login])]
     [:div.container
      [:div.columns
       [:div.column.is-12.has-text-centered

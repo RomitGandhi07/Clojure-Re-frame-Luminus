@@ -6,7 +6,7 @@
     [booksclubwithauth.validation :refer [validate-user-registration-data]]))
 
 (defn register []
-  (let [errors @(rf/subscribe [:error])]
+  (let [errors @(rf/subscribe [:error/registration])]
     [:div.container
      [:div.columns
       [:div.column.is-12.has-text-centered

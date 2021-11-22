@@ -97,8 +97,8 @@
 
 (rf/reg-event-fx
   :http-failure
-  (fn [cofx [_ path resp]]
-    {:db (assoc (:db cofx) :error (get-in resp [:response :error]))
+  (fn [{:keys [db]} [_ path resp]]
+    {:db (assoc-in db [:error path] (get-in resp [:response :error]))
      :dispatch [:stop-loading path]}))
 
 

@@ -55,7 +55,7 @@
              [book id]])])])))
 
 (defn add-update-book [add? & rs]
-  (let [errors @(rf/subscribe [:error])]
+  (let [errors @(rf/subscribe [:error/add-update-book])]
     [:div.container
      [:div.columns
       [:div.column.is-12.has-text-centered

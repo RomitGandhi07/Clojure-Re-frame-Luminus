@@ -8,26 +8,26 @@
 (rf/reg-event-fx
   :user-registration
   (fn [cofx [_ data]]
-    {:dispatch [:start-loading :login-registration]
+    {:dispatch [:start-loading :registration]
      :http-xhrio {:uri "/api/register"
                   :method :post
                   :params data
                   :format (ajax/json-request-format)
                   :response-format (ajax/json-response-format {:keywords? true})
-                  :on-success [:login-registration-success :login-registration]
-                  :on-failure [:http-failure :login-registration]}}))
+                  :on-success [:login-registration-success :registration]
+                  :on-failure [:http-failure :registration]}}))
 
 (rf/reg-event-fx
   :user-login
   (fn [cofx [_ data]]
-    {:dispatch [:start-loading :login-registration]
+    {:dispatch [:start-loading :login]
      :http-xhrio {:uri "/api/login"
                   :method :post
                   :params data
                   :format (ajax/json-request-format)
                   :response-format (ajax/json-response-format {:keywords? true})
-                  :on-success [:login-registration-success :login-registration]
-                  :on-failure [:http-failure :login-registration]}}))
+                  :on-success [:login-registration-success :login]
+                  :on-failure [:http-failure :login]}}))
 
 (rf/reg-event-fx
   :logout
