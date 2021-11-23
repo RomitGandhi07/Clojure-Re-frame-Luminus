@@ -26,7 +26,8 @@
 (rf/reg-event-fx
   :delete-book-success
   (fn [cofx [_ path]]
-    {:dispatch-n (list
+    {:db (assoc (:db cofx) :toast {:success "Book Successfully Deleted..."})
+     :dispatch-n (list
                    [:stop-loading path]
                    [:my-read-books])}))
 
@@ -46,7 +47,7 @@
   :add-book-success
   (fn [cofx [_ path]]
     {:dispatch [:stop-loading path]
-     :db (assoc (:db cofx) :error nil)
+     :db (assoc (:db cofx) :toast {:success "Book Successfully Added..."})
      :navigate! [:my-books]}))
 
 (rf/reg-event-fx
@@ -84,7 +85,7 @@
   :update-book-success
   (fn [cofx [_ path]]
     {:dispatch [:stop-loading path]
-     :db (dissoc (:db cofx) :update-book :error)
+     :db (assoc (:db cofx) :toast {:success "Book Successfully Updated..."})
      :navigate! [:my-books]}))
 
 (rf/reg-event-fx

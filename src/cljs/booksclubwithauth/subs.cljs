@@ -106,3 +106,18 @@
     (rf/subscribe [:error]))
   (fn [error]
     (or (:add-book error) (:update-book error))))
+
+(rf/reg-sub
+  :error-response
+  (fn [db]
+    (:error-response db)))
+
+(rf/reg-sub
+  :searched-users
+  (fn [db]
+    (:searched-users db)))
+
+(rf/reg-sub
+  :toast
+  (fn [db]
+    (:toast db)))

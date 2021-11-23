@@ -4,7 +4,7 @@
    [fork.re-frame :as fork]
    [booksclubwithauth.pages.error :refer [error]]
    [booksclubwithauth.validation :refer [add-update-book-validation]]
-   ["react-toastify" :refer [ToastContainer toast]]))
+   [booksclubwithauth.pages.toast-notification :refer [toast-notification]]))
 
 (defn book [id]
   (let [book @(rf/subscribe [:books/read-book id])]
@@ -34,16 +34,10 @@
       [:div.container.mt-5
        [:p "LOADING..."]]
       [:div.container.mt-5
+       [toast-notification]
        [:div.columns
         [:p.title.is-4.has-text-centered
          "Your Books"]]
-       ;[:> ToastContainer
-       ; {:position "top-center"
-       ;  :autoClose 5000}]
-       ;[:button {:on-click (fn [e]
-       ;                      (.preventDefault e)
-       ;                      (toast "sadf" {:position "top-center"
-       ;                                     :autoClose 5000}))} "CLICk"]
        [:a.button.is-link {:href "#/book/add"} "Add New Book"]
        (if (empty? book-ids)
          [:div.columns.is-mobile.mt-5

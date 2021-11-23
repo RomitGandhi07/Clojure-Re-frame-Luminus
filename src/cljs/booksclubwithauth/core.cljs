@@ -18,7 +18,9 @@
     [booksclubwithauth.pages.register :as register]
     [booksclubwithauth.pages.user :as user]
     [booksclubwithauth.events.login-registration]
-    [booksclubwithauth.events.books])
+    [booksclubwithauth.events.books]
+    [booksclubwithauth.events.users]
+    ["react-toastify" :refer [ToastContainer]])
   (:import goog.History))
 
 (defn nav-link [uri title page]
@@ -72,12 +74,18 @@
 
 (defn page []
   (if-let [page @(rf/subscribe [:common/page])]
-    [:div
+    [:<>
+     [:> ToastContainer
+      {:position "top-center"
+       :autoClose 3000
+       :closeOnClick true}]
+     [:div
      [navbar]
-     [page]]))
+     [page]]]))
 
 (defn navigate! [match _]
-  (rf/dispatch [:common/navigate match]))
+  (rf/dispatch [:common/navigate match])
+  (rf/dispatch [:clear-error]))
 
 (def router
   (reitit/router

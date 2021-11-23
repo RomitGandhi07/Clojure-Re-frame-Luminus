@@ -95,11 +95,27 @@
   (fn [db [_ path]]
     (assoc-in db [:loading path] false)))
 
+(rf/reg-event-db
+  :clear-error
+  (fn [db]
+    (dissoc db :error :error-response)))
+
+(rf/reg-event-db
+  :clear-toast-notification
+  (fn [db]
+    (dissoc db :toast)))
+
 (rf/reg-event-fx
   :http-failure
   (fn [{:keys [db]} [_ path resp]]
-    {:db (assoc-in db [:error path] (get-in resp [:response :error]))
-     :dispatch [:stop-loading path]}))
+    (let [error (get-in resp [:response :error])]
+      {:db (-> db
+               (assoc-in [:error path] error)
+               (assoc :error-response resp)
+               (assoc :toast {:error (if (map? error)
+                                        "Something went wrong..."
+                                        error)}))
+       :dispatch [:stop-loading path]})))
 
 
 (rf/reg-event-db
