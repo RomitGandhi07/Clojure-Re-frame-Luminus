@@ -137,6 +137,11 @@
     (apply rfe/push-state route)))
 
 (rf/reg-event-fx
+  :navigate-login!
+  (fn [db]
+    {:navigate! [:login]}))
+
+(rf/reg-event-fx
   :common/navigate!
   (fn [_ [_ url-key params query]]
     {:common/navigate-fx! [url-key params query]}))

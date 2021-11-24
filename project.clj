@@ -36,6 +36,7 @@
                  [org.clojure/clojure "1.10.3"]
                  [org.clojure/clojurescript "1.10.879" :scope "provided"]
                  [org.clojure/core.async "1.3.622"]
+                 [org.clojure/core.match "1.0.0"]
                  [org.clojure/tools.cli "1.0.206"]
                  [org.clojure/tools.logging "1.1.0"]
                  [org.webjars.npm/bulma "0.9.3"]

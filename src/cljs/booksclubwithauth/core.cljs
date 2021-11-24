@@ -1,6 +1,7 @@
 (ns booksclubwithauth.core
   (:require
     [day8.re-frame.http-fx]
+    [cljs.core.match :refer-macros [match]]
     [reagent.dom :as rdom]
     [reagent.core :as r]
     [re-frame.core :as rf]
@@ -95,39 +96,38 @@
   (reitit/router
     [["/" {:name        :home
            :view        #'home-page
+           :public?     true
            :controllers [{:start (fn [_] (rf/dispatch [:page/init-home]))}]}]
      ["/about" {:name :about
-                :view #'about-page}]
+                :view #'about-page
+                :public? true}]
      ["/login" {:name :login
-                   :view login/login}]
+                :view login/login
+                :public? true}]
      ["/register" {:name :register
-                   :view register/register}]
+                   :view register/register
+                   :public? true}]
      ["/book/add" {:name :add-book
-                   :view book/add-book
-                   :controllers [{:start (fn [_]
-                                           (rf/dispatch [:check-authentication]))}]}]
+                   :view book/add-book}]
 
      ["/book/:id/edit" {:name :update-book
                         :view book/update-book
                         :controllers [{:parameters {:path [:id]}
                                        :start (fn [{:keys [path]}]
-                                                (rf/dispatch [:check-authentication])
                                                 (let [{id :id} path]
                                                   (rf/dispatch [:fetch-book-details id])))}]}]
 
      ["/books" {:name :my-books
                 :view book/my-books
                 :controllers [{:start (fn [_]
-                                        (rf/dispatch [:check-authentication])
                                         (rf/dispatch [:my-read-books]))}]}]
 
      ["/users" {:name :search-users
-                :view user/search-users
-                :controllers [{:start (fn [_]
-                                        (rf/dispatch [:check-authentication]))}]}]
+                :view user/search-users}]
 
      ["/chart" {:name :chart
-                :view chart/chartjs-component}]]))
+                :view chart/chartjs-component
+                :public? true}]]))
 
 (defn start-router! []
   (rfe/start!
@@ -137,11 +137,24 @@
 
 ;; -------------------------
 
+(defn router-component
+  [{:keys [router]}]
+  (let [current-route (rf/subscribe [:common/route])
+        user?         (not (nil? @(rf/subscribe [:user])))
+        route-data    (merge
+                        (select-keys @current-route [:parameters])
+                        (select-keys (:data @current-route) [:public? :view :name])
+                        {:user user?})
+        public?       (:public? route-data)]
+    (when @current-route
+      (match [public? user?]
+             [nil false] (rf/dispatch [:navigate-login!])
+             :else (page)))))
 
 ;; Initialize app
 (defn ^:dev/after-load mount-components []
   (rf/clear-subscription-cache!)
-  (rdom/render [#'page] (.getElementById js/document "app")))
+  (rdom/render [router-component {:router router}] (.getElementById js/document "app")))
 
 (rf/dispatch-sync [:initialise-db])
 
