@@ -159,5 +159,6 @@
   []
   (let [book-data @(rf/subscribe [:update-book])]
     [:div
+     [toast-notification]
      (if book-data
        [add-update-book false book-data (:id book-data)])]))

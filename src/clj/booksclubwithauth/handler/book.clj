@@ -79,7 +79,7 @@
      user-id :user-id} :path-params}]
   (f/if-let-failed? [_ (db-success? (db/delete-book! {:id book-id
                                                       :user_id user-id}))]
-                    (response/bad-request {:error "Something went wrong..."})
+                    (response/not-found {:error "Book with given id not found..."})
                     (response/ok {:message "Book successfully deleted..."})))
 
 (defn get-book-by-id
@@ -87,9 +87,13 @@
      user-id :user-id} :path-params}]
   (f/if-let-failed? [data (db-success? (db/get-book-by-id! {:id book-id
                                                             :user_id user-id}))]
-                    (response/bad-request {:error "Something went wrong..."})
+                    (response/not-found {:error "Book with given id not found..."})
                     (response/ok {:message "Book successfully fetched..."
                                   :data data})))
+
+;(defn get-book-by-id
+;  [request]
+;  (response/not-found {:error "Book with given id not found..."}))
 
 (comment
   (def db {:user          {:id    123

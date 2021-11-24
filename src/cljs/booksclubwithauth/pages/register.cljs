@@ -3,11 +3,13 @@
     [re-frame.core :as rf]
     [fork.re-frame :as fork]
     [booksclubwithauth.pages.error :refer [error]]
-    [booksclubwithauth.validation :refer [validate-user-registration-data]]))
+    [booksclubwithauth.validation :refer [validate-user-registration-data]]
+    [booksclubwithauth.pages.toast-notification :refer [toast-notification]]))
 
 (defn register []
   (let [errors @(rf/subscribe [:error/registration])]
     [:div.container
+     [toast-notification]
      [:div.columns
       [:div.column.is-12.has-text-centered
        [:p.title.is-3 "Sign Up"]]]

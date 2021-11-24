@@ -25,8 +25,8 @@
 
 (rf/reg-event-fx
   :delete-book-success
-  (fn [cofx [_ path]]
-    {:db (assoc (:db cofx) :toast {:success "Book Successfully Deleted..."})
+  (fn [cofx [_ path resp]]
+    {:db (assoc (:db cofx) :toast {:success (:message resp)})
      :dispatch-n (list
                    [:stop-loading path]
                    [:my-read-books])}))
@@ -45,9 +45,9 @@
 
 (rf/reg-event-fx
   :add-book-success
-  (fn [cofx [_ path]]
+  (fn [cofx [_ path resp]]
     {:dispatch [:stop-loading path]
-     :db (assoc (:db cofx) :toast {:success "Book Successfully Added..."})
+     :db (assoc (:db cofx) :toast {:success (:message resp)})
      :navigate! [:my-books]}))
 
 (rf/reg-event-fx
@@ -72,7 +72,8 @@
 (rf/reg-event-fx
   :fetch-book-details
   (fn [cofx [_ book-id]]
-    {:dispatch [:start-loading :fetch-book]
+    {:db (dissoc (:db cofx) :update-book)
+     :dispatch [:start-loading :fetch-book]
      :http-xhrio {:uri (str "api/user/" (get-in cofx [:db :user :id]) "/book/" book-id)
                   :method :get
                   :format (ajax/json-request-format)
@@ -83,9 +84,9 @@
 
 (rf/reg-event-fx
   :update-book-success
-  (fn [cofx [_ path]]
+  (fn [cofx [_ path resp]]
     {:dispatch [:stop-loading path]
-     :db (assoc (:db cofx) :toast {:success "Book Successfully Updated..."})
+     :db (assoc (:db cofx) :toast {:success (:message resp)})
      :navigate! [:my-books]}))
 
 (rf/reg-event-fx

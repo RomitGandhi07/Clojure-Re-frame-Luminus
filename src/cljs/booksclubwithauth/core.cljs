@@ -17,6 +17,7 @@
     [booksclubwithauth.pages.login :as login]
     [booksclubwithauth.pages.register :as register]
     [booksclubwithauth.pages.user :as user]
+    [booksclubwithauth.pages.chart :as chart]
     [booksclubwithauth.events.login-registration]
     [booksclubwithauth.events.books]
     [booksclubwithauth.events.users]
@@ -50,7 +51,8 @@
                  (if (some? @username)
                    [:<>
                     [nav-link "#/books" "Books" :my-books]
-                    [nav-link "#/users" "Users" :search-users]])]
+                    [nav-link "#/users" "Users" :search-users]
+                    [nav-link "#/chart" "Demo Chart" :chart]])]
                 [:div.navbar-end
                  (if (some? @username)
                    [:<>
@@ -81,7 +83,9 @@
        :closeOnClick true}]
      [:div
      [navbar]
-     [page]]]))
+     [page]]]
+    [:div
+     [:p "404 Page"]]))
 
 (defn navigate! [match _]
   (rf/dispatch [:common/navigate match])
@@ -120,7 +124,10 @@
      ["/users" {:name :search-users
                 :view user/search-users
                 :controllers [{:start (fn [_]
-                                        (rf/dispatch [:check-authentication]))}]}]]))
+                                        (rf/dispatch [:check-authentication]))}]}]
+
+     ["/chart" {:name :chart
+                :view chart/chartjs-component}]]))
 
 (defn start-router! []
   (rfe/start!

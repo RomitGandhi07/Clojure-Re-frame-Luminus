@@ -3,12 +3,14 @@
     [re-frame.core :as rf]
     [fork.re-frame :as fork]
     [booksclubwithauth.pages.error :refer [error]]
-    [booksclubwithauth.validation :refer [validate-user-login-data]]))
+    [booksclubwithauth.validation :refer [validate-user-login-data]]
+    [booksclubwithauth.pages.toast-notification :refer [toast-notification]]))
 
 (defn login []
   ()
    (let [errors @(rf/subscribe [:error/login])]
     [:div.container
+     [toast-notification]
      [:div.columns
       [:div.column.is-12.has-text-centered
        [:p.title.is-3 "Login"]]]
