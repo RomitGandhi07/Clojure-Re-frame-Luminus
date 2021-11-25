@@ -3,7 +3,7 @@
    [re-frame.core :as rf]
    [fork.re-frame :as fork]
    [booksclubwithauth.pages.error :refer [error]]
-   [booksclubwithauth.validation :refer [add-update-book-validation]]
+   [booksclubwithauth.validation :refer [validate-add-update-book-data]]
    [booksclubwithauth.pages.toast-notification :refer [toast-notification]]))
 
 (defn book [id]
@@ -64,7 +64,7 @@
       [:div.column.is-4.is-offset-4
        [fork/form
         {:initial-values (first rs)
-         :validation add-update-book-validation
+         :validation validate-add-update-book-data
          :keywordize-keys true
          :on-submit (fn [state]
                       (if add?

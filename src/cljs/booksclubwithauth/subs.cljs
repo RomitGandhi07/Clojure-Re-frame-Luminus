@@ -5,6 +5,33 @@
 (def default-profile-img "https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg")
 
 (rf/reg-sub
+  :common/route
+  (fn [db _]
+    (-> db :common/route)))
+
+(rf/reg-sub
+  :common/page-id
+  :<- [:common/route]
+  (fn [route _]
+    (-> route :data :name)))
+
+(rf/reg-sub
+  :common/page
+  :<- [:common/route]
+  (fn [route _]
+    (-> route :data :view)))
+
+(rf/reg-sub
+  :docs
+  (fn [db _]
+    (:docs db)))
+
+(rf/reg-sub
+  :common/error
+  (fn [db _]
+    (:common/error db)))
+
+(rf/reg-sub
   :error
   (fn [db]
     (get db :error)))

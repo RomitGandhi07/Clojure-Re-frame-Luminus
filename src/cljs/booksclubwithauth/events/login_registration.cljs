@@ -1,8 +1,7 @@
 (ns booksclubwithauth.events.login-registration
   (:require
     [re-frame.core :as rf]
-    [ajax.core :as ajax]
-    [booksclubwithauth.effects :refer [set-user-ls remove-user-ls]]))
+    [ajax.core :as ajax]))
 
 
 (rf/reg-event-fx
@@ -32,19 +31,19 @@
 (rf/reg-event-fx
   :logout
   (fn [db]
-    (remove-user-ls)
     {:db (-> db
              (dissoc :user)
              (dissoc :user-secret))
+     :remove-token-ls {}
      :navigate! [:login]}))
 
 (rf/reg-event-fx
   :login-registration-success
   (fn [cofx [_ path resp]]
-    (set-user-ls resp)
     {:dispatch [:stop-loading path]
      :db (-> (:db cofx)
              (assoc :user-secret (get-in resp [:data :token]))
              (assoc :user (:data resp))
              (dissoc :error))
+     :set-token-ls (get-in resp [:data :token])
      :navigate! [:my-books]}))

@@ -13,13 +13,13 @@
 
 (rf/reg-event-fx
   :my-read-books
-  (fn [cofx]
+  (fn [{:keys [db]}]
     {:dispatch [:start-loading :my-books]
-     :db (dissoc (:db cofx) :read-books)
-     :http-xhrio {:uri (str "api/user/" (get-in cofx [:db :user :id]) "/book")
+     :db (dissoc db :read-books)
+     :http-xhrio {:uri (str "api/user/" (get-in db [:user :id]) "/book")
                   :method :get
                   :response-format (ajax/json-response-format {:keywords? true})
-                  :headers (auth-header (:db cofx))
+                  :headers (auth-header db)
                   :on-success [:my-read-books-success :my-books]
                   :on-failure [:http-failure :my-books]}}))
 
@@ -33,13 +33,13 @@
 
 (rf/reg-event-fx
   :delete-book
-  (fn [cofx [_ id]]
+  (fn [{:keys [db]} [_ id]]
     {:dispatch [:start-loading :delete-book]
-     :http-xhrio {:uri (str "api/user/" (get-in cofx [:db :user :id]) "/book/" id)
+     :http-xhrio {:uri (str "api/user/" (get-in db [:user :id]) "/book/" id)
                   :method :delete
                   :format (ajax/json-request-format)
                   :response-format (ajax/json-response-format {:keywords? true})
-                  :headers (auth-header (:db cofx))
+                  :headers (auth-header db)
                   :on-success [:delete-book-success :delete-book]
                   :on-failure [:http-failure :delete-book]}}))
 
@@ -52,14 +52,14 @@
 
 (rf/reg-event-fx
   :add-book
-  (fn [cofx [_ data]]
+  (fn [{:keys [db]} [_ data]]
     {:dispatch [:start-loading :add-book]
-     :http-xhrio {:uri (str "api/user/" (get-in cofx [:db :user :id]) "/book")
+     :http-xhrio {:uri (str "api/user/" (get-in db [:user :id]) "/book")
                   :method :post
                   :params data
                   :format (ajax/json-request-format)
                   :response-format (ajax/json-response-format {:keywords? true})
-                  :headers (auth-header (:db cofx))
+                  :headers (auth-header db)
                   :on-success [:add-book-success :add-book]
                   :on-failure [:http-failure :add-book]}}))
 
@@ -71,14 +71,14 @@
 
 (rf/reg-event-fx
   :fetch-book-details
-  (fn [cofx [_ book-id]]
-    {:db (dissoc (:db cofx) :update-book)
+  (fn [{:keys [db]} [_ book-id]]
+    {:db (dissoc db :update-book)
      :dispatch [:start-loading :fetch-book]
-     :http-xhrio {:uri (str "api/user/" (get-in cofx [:db :user :id]) "/book/" book-id)
+     :http-xhrio {:uri (str "api/user/" (get-in db [:user :id]) "/book/" book-id)
                   :method :get
                   :format (ajax/json-request-format)
                   :response-format (ajax/json-response-format {:keywords? true})
-                  :headers (auth-header (:db cofx))
+                  :headers (auth-header db)
                   :on-success [:fetch-book-details-success :fetch-book]
                   :on-failure [:http-failure :fetch-book]}}))
 
@@ -91,14 +91,14 @@
 
 (rf/reg-event-fx
   :update-book
-  (fn [cofx [_ data book-id]]
+  (fn [{:keys [db]} [_ data book-id]]
     {:dispatch [:start-loading :update-book]
-     :http-xhrio {:uri (str "api/user/" (get-in cofx [:db :user :id]) "/book/" book-id)
+     :http-xhrio {:uri (str "api/user/" (get-in db [:user :id]) "/book/" book-id)
                   :method :put
                   :params data
                   :format (ajax/json-request-format)
                   :response-format (ajax/json-response-format {:keywords? true})
-                  :headers (auth-header (:db cofx))
+                  :headers (auth-header db)
                   :on-success [:update-book-success :update-book]
                   :on-failure [:http-failure :update-book]}}))
 

@@ -6,33 +6,12 @@
     [reitit.frontend.controllers :as rfc]))
 
 ;;dispatchers
+(defonce books-club-ls-user-key "books-club-user-token")  ;; localstorage key
 
 
-;; -- Local Storage  ----------------------------------------------------------
-;;
-;; Part of the conduit challenge is to store a user in localStorage, and
-;; on app startup, reload the user from when the program was last run.
-;;
-(def books-club-ls-user-key "books-club-user-token")  ;; localstore key
-
-(defn set-user-ls
-  [resp]
-  (.setItem js/localStorage books-club-ls-user-key (str (-> resp
-                                                      :data
-                                                      :token))))  ;; sorted-map written as an EDN map
-
-;; Removes user information from localStorge when a user logs out.
-;;
-(defn remove-user-ls
-  []
-  (.removeItem js/localStorage books-club-ls-user-key))
-
-(def set-user-interceptor [                                 ;;(rf/path :user-demo)        ;; `:user` path within `db`, rather than the full `db`.
-                           (rf/after set-user-ls) ;; write user to localstore (after)
-                           rf/trim-v])            ;; removes first (event id) element from the event vec
-
-(def remove-user-interceptor [(rf/after remove-user-ls)])
-
+;(def set-user-interceptor [                                 ;;(rf/path :user-demo)        ;; `:user` path within `db`, rather than the full `db`.
+;                           (rf/after set-user-ls) ;; write user to localstore (after)
+;                           rf/trim-v])            ;; removes first (event id) element from the event vec
 
 (defn auth-header
   "Get user token and format for API authorization"
@@ -47,8 +26,6 @@
     (assoc cofx :local-store-user
                       (some->> (.getItem js/localStorage books-club-ls-user-key)
                                (cljs.reader/read-string)))))
-
-
 ;-----------------------------------------------------------
 ; Events
 
@@ -67,7 +44,15 @@
       {:db {}
        :dispatch [:token-verify-failure]})))
 
+(rf/reg-fx
+  :set-token-ls
+  (fn [token]
+    (.setItem js/localStorage books-club-ls-user-key (str token))))
 
+(rf/reg-fx
+  :remove-token-ls
+  (fn [_]
+    (.removeItem js/localStorage books-club-ls-user-key)))
 
 (rf/reg-event-db
   :token-verify-success
@@ -168,32 +153,3 @@
   :page/init-home
   (fn [_ _]
     {:dispatch [:fetch-docs]}))
-
-;;subscriptions
-
-(rf/reg-sub
-  :common/route
-  (fn [db _]
-    (-> db :common/route)))
-
-(rf/reg-sub
-  :common/page-id
-  :<- [:common/route]
-  (fn [route _]
-    (-> route :data :name)))
-
-(rf/reg-sub
-  :common/page
-  :<- [:common/route]
-  (fn [route _]
-    (-> route :data :view)))
-
-(rf/reg-sub
-  :docs
-  (fn [db _]
-    (:docs db)))
-
-(rf/reg-sub
-  :common/error
-  (fn [db _]
-    (:common/error db)))

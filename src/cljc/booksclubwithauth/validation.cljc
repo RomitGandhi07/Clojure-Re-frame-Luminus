@@ -21,7 +21,7 @@
    [:description
     [st/string  :message "Description must be string"]]])
 
-(defn add-update-book-validation
+(defn validate-add-update-book-data
   [params]
   (first (st/validate params book-schema)))
 
