@@ -45,4 +45,21 @@ SELECT * FROM users WHERE email = :email AND password = :password
 
 -- :name search-users! :? :*
 -- :doc retrieves user by name
-SELECT id,name,email,profile_pic FROM users WHERE id != :id AND name = :name
+SELECT A.id,A.name,A.email,A.profile_pic, IF(B.id IS NULL, false, true) as followed FROM users as A
+LEFT JOIN follow as B ON A.id = B.user_id
+WHERE A.id != :id AND A.name LIKE CONCAT('%',:name,'%') LIMIT 50
+
+-- :name follow-user! :! :n
+-- :doc follow user
+INSERT INTO follow
+(user_id, follower_id)
+VALUES (:user_id,:follower_id)
+
+-- :name unfollow-user! :! :n
+-- :doc unfollow user
+DELETE FROM follow
+WHERE user_id = :user_id AND follower_id = :follower_id
+
+-- :name user-followed? :? :1
+-- :doc Check user has followed or not
+SELECT * FROM follow WHERE user_id = :user_id AND follower_id = :follower_id

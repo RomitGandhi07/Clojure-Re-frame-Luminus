@@ -19,6 +19,7 @@
     [booksclubwithauth.pages.register :as register]
     [booksclubwithauth.pages.user :as user]
     [booksclubwithauth.pages.chart :as chart]
+    [booksclubwithauth.pages.followers-list :as followers]
     [booksclubwithauth.events.login-registration]
     [booksclubwithauth.events.books]
     [booksclubwithauth.events.users]
@@ -53,6 +54,7 @@
                    [:<>
                     [nav-link "#/books" "Books" :my-books]
                     [nav-link "#/users" "Users" :search-users]
+                    [nav-link "#/followers" "Followers" :followers]
                     [nav-link "#/chart" "Demo Chart" :chart]])]
                 [:div.navbar-end
                  (if (some? @username)
@@ -124,6 +126,9 @@
 
      ["/users" {:name :search-users
                 :view user/search-users}]
+
+     ["/followers" {:name :followers
+                :view followers/followers-list}]
 
      ["/chart" {:name :chart
                 :view chart/chartjs-component

@@ -145,6 +145,27 @@
     (:searched-users db)))
 
 (rf/reg-sub
+  :searched-users-ids
+  (fn []
+    (rf/subscribe [:searched-users]))
+  (fn [users]
+    (keys users)))
+
+(rf/reg-sub
+  :searched-user-info
+  (fn []
+    (rf/subscribe [:searched-users]))
+  (fn [users [_ id]]
+    (get users id)))
+
+(rf/reg-sub
+  :searched-user-info-follow
+  (fn []
+    (rf/subscribe [:searched-users]))
+  (fn [users [_ id]]
+    (not= (get-in users [id :followed]) 0)))
+
+(rf/reg-sub
   :toast
   (fn [db]
     (:toast db)))
