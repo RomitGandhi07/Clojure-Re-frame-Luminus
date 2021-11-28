@@ -26,6 +26,8 @@
 
    ["/api/login" {:post user/login}]
 
+   ["/api/email" {:get user/email}]
+
    ["/api/verifyToken" {:middleware [middleware/auth-middleware]
                         :get user/verifyToken}]
 

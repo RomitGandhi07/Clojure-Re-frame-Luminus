@@ -2,7 +2,10 @@
   (:require [failjure.core :as f]
             [buddy.core.hash :as hash]
             [buddy.core.codecs :refer [bytes->hex]]
-            [ring.util.http-response :as response]))
+            [ring.util.http-response :as response]
+            [postal.core :refer [send-message]]
+            [taoensso.carmine :as car :refer [wcar]]
+            [clojure.data.json :as json]))
 
 ;; :one or :1 = one row as a hash-map or nil otherwise
 ;; :many or :* = many rows as a vector of hash-maps or empty seq otherwise
@@ -53,3 +56,25 @@
     (response/internal-server-error {:error (:message e "Something went wrong...")})
     :else
     (response/bad-request {:error (:message e "Something went wrong...")})))
+
+(defn send-email
+  [to]
+  (send-message {:host "smtp.gmail.com"
+                 :user "democera@gmail.com"
+                 :pass "Password@123"
+                 :port 587
+                 :tls true}
+                {:from "democera@gmail.com"
+                 :to to
+                 :subject "Hi!"
+                 :body "Test."}))
+
+(def server1-conn {:pool {} :spec {:uri "redis://redistogo:4f77e548d5905b50fc71f55cb2c2a6e5@sole.redistogo.com:9441/"}})
+(defmacro wcar* [& body] `(car/wcar server1-conn ~@body))
+
+(defn send-email
+  [data]
+  (let [c-data (json/write-str data
+                               :key-fn #(str %))]
+    (println c-data)
+    (wcar* (car/publish "email" c-data))))

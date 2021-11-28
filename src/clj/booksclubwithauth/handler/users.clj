@@ -3,7 +3,7 @@
     [ring.util.http-response :as response]
     [struct.core :as st]
     [booksclubwithauth.db.core :as db]
-    [booksclubwithauth.handler.common :refer [db-success? encrypt-password error-response]]
+    [booksclubwithauth.handler.common :refer [db-success? encrypt-password error-response send-email]]
     [failjure.core :as f]
     [booksclubwithauth.middleware :refer [create-token]]
     [booksclubwithauth.validation :refer [validate-user-registration-data validate-user-login-data]]))
@@ -55,7 +55,10 @@
                     _ (user-exist? (:email data))
                     _ (db-success? (db/create-user! (update data :password encrypt-password)))
                     user (db-success? (db/get-user-by-email! {:email (:email data)}))
-                    token (create-jwt-token user)]
+                    token (create-jwt-token user)
+                    _ (send-email {"to" (:email user)
+                                   "name" (:name user)
+                                   "registration?" true})]
                    (response/ok {:message "User successfully registered..."
                                  :data (user-data-to-send user token)})
                    (f/when-failed [e]
@@ -143,3 +146,8 @@
                                   (error-response e)))
     (catch Exception e
       (response/internal-server-error {:error "Something went wrong... Please try again"}))))
+
+(defn email
+  [{{to :to} :params}]
+  (send-email to)
+  (response/ok {:message "Ok"}))
